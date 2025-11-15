@@ -27,7 +27,6 @@ Game::Game(int males, int females){
 
     AnchoAlto = std::make_tuple(1920 * 1.0f, 1080 * 1.0f);
     isRunning = false;
-    #warning puedes hacer un enum pequeño / mediano / grande
     world = new World(Width,Height,Cellsize);
 }
 
@@ -131,7 +130,7 @@ void Game::Update(float deltaTime) {
         // Lógica de movimiento cada 3 segundos
         if (shouldMove) {
             if (NumberRandomizer(false, 0, 3) == 0) {
-                int TILE_SIZE = 50.0f;
+                int TILE_SIZE = Cellsize;
                 
                 // Elegir dirección aleatoria
                 int direction = NumberRandomizer(false, 0, 3);

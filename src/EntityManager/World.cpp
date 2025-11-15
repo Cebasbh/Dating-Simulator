@@ -46,10 +46,8 @@ void World::MakeMeetings(){
                 Person* alfamale = Bins[i]->GetValue();
                 std::vector<Person*> peopletomeet = Mundo->GetNeighbors(alfamale);
                 if (peopletomeet.size() > 0){
-                    std::cout << alfamale->GetName() << "/looker X: " << std::get<1>(alfamale->GetPosition()) << "/ Y: " << std::get<0>(alfamale->GetPosition()) << "\n";
                     for (Person* p : peopletomeet){
                         if (p->GetSex() == FEMALE && alfamale->GetFriendsIds()->SearchbyId(p) == nullptr){
-                            std::cout << p->GetName() << " X: " << std::get<1>(p->GetPosition()) << "/ Y: " << std::get<0>(p->GetPosition()) << "\n";
                             alfamale->Meet(p);
                         }
                     }
