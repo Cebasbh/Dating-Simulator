@@ -8,7 +8,6 @@ AVLNode::AVLNode(std::tuple <Person*,float> key){
     Height = 0;
     Balance = 0;
 }
-
 AVLNode::~AVLNode() {
 }
 std::tuple <Person*,float> AVLNode::GetKey(){

@@ -18,6 +18,8 @@ int HashTable::HashFunction(std::string key){
     }
     return hash;
 }
+
+/*Lo saqué de este link: */
 void HashTable::Rehash(){
     HashEntry** OldTable = Bins;
     int oldSize = Size;
@@ -37,6 +39,7 @@ void HashTable::Rehash(){
     
     delete[] OldTable;
 }
+
 bool HashTable::Insert(std::string key, Person* value){
     if (!value){
         return false;
