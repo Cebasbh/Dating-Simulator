@@ -14,7 +14,7 @@ float NumberRandomizer(bool flag, float RI, float RS){
     }
     return randomizer;
 }
-
+/*Prompt: Necesito un algoritmo que me genere n particiones de 1. Respuesta: Este algoritmo es un problema matemático conocido de cortes y secciones*/
 std::vector<float> FractionRandomizer(int count){
     std::vector<float> fractions;
     float sum = 0;
