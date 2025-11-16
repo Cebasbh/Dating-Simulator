@@ -126,7 +126,7 @@ AVLNode* AVLTree::SearchbyId(AVLNode* node, Person* searched){
     }
     return nullptr;
 }
-
+/*Delete fue extraido de: https://www.educative.io/answers/how-to-delete-a-node-from-an-avl-tree*/
 void AVLTree::DeletebyComp(float valuetodelete){
     return DeletebyComp(Root, valuetodelete);
 }
