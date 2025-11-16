@@ -11,6 +11,7 @@ class Grid {
     public:
         Grid(int width, int height, int cellsize);
 
-        void Insert(Person* p);
-        std::vector<Person*> GetNeighbors(Person* p);
+        void Insert(Person* person);
+        void UpdatePersonPosition(Person* person);
+        std::vector<Person*> GetNeighbors(Person* person);
 };

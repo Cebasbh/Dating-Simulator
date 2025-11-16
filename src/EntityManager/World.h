@@ -18,6 +18,7 @@ class World
         void CoupleUp(std::string nameA, std::string nameB);
         void Apocalypsis();
 
+        void UpdateGrid();
         void MakeMeetings();
         void KillEveryone();
         std::vector<Person*> GetPersons();

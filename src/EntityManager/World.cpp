@@ -39,6 +39,14 @@ void World::KillEveryone(){
         }
     }
 }
+void World::UpdateGrid(){
+    HashEntry** Bins = Persons->GetBins();
+    for (int i = 0; i < Persons->GetSize(); ++i){
+        if (Bins[i] != nullptr && !Bins[i]->GetIsDeleted() && Bins[i]->GetValue() != nullptr){
+                Mundo->UpdatePersonPosition(Bins[i]->GetValue());
+        }
+    }
+}
 void World::MakeMeetings(){
     HashEntry** Bins = Persons->GetBins();
     for (int i = 0; i < Persons->GetSize(); ++i) {

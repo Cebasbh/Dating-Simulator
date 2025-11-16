@@ -34,8 +34,7 @@ void Game::Initialize()
 {
     //Creación de pantalla
     this->window = SDL_CreateWindow(
-        #warning PONERLE NOMBREAAAAA
-        "Megaman X", 
+        "Dating Simulator", 
         std::get<0>(this->AnchoAlto),
         std::get<1>(this->AnchoAlto),
         SDL_WINDOW_FULLSCREEN
@@ -126,113 +125,106 @@ void Game::Update(float deltaTime) {
         shouldMove = true;
         simulationTimer = 0.0f;
     }
+    
     for (Person* person : world->GetPersons()) {
-        // Lógica de movimiento cada 3 segundos
+        if (!person->IsAlive()){
+            continue;
+        }
         if (shouldMove) {
-            if (NumberRandomizer(false, 0, 3) == 0) {
-                int TILE_SIZE = Cellsize;
-                
-                // Elegir dirección aleatoria
+            if (NumberRandomizer(false, 0, 1) == 0) {
                 int direction = NumberRandomizer(false, 0, 3);
+                int currentY = std::get<0>(person->GetPosition());
+                int currentX = std::get<1>(person->GetPosition());
                 
                 switch (direction) {
-                    case 0: // Arriba
-                        person->SetPosition(
-                            std::make_tuple(std::get<0>(person->GetPosition()) - TILE_SIZE,std::get<1>(person->GetPosition()))
-                        );
+                    case 0:
+                        if (currentY - 1 >= 0) {
+                            person->SetPosition(std::make_tuple(currentY - 1, currentX));
+                        }
                         break;
-                    case 1: // Abajo
-                        person->SetPosition(
-                            std::make_tuple(std::get<0>(person->GetPosition()) + TILE_SIZE,std::get<1>(person->GetPosition()))
-                        );
+                    case 1:
+                        if (currentY + 1 < Height) {
+                            person->SetPosition(std::make_tuple(currentY + 1, currentX));
+                        }
                         break;
-                    case 2: // Derecha
-                        person->SetPosition(
-                            std::make_tuple(std::get<0>(person->GetPosition()), std::get<1>(person->GetPosition()) + TILE_SIZE)
-                        );
+                    case 2:
+                        if (currentX + 1 < Width) {
+                            person->SetPosition(std::make_tuple(currentY, currentX + 1));
+                        }
                         break;
-                    case 3: // Izquierda
-                        person->SetPosition(
-                            std::make_tuple(std::get<0>(person->GetPosition()), std::get<1>(person->GetPosition()) - TILE_SIZE)
-                        );
+                    case 3:
+                        if (currentX - 1 >= 0) {
+                            person->SetPosition(std::make_tuple(currentY, currentX - 1));
+                        }
                         break;
                 }
-                world->MakeMeetings();
             }
         }
     }
+    if (shouldMove) {
+        world->UpdateGrid();
+    }
+    world->MakeMeetings();
 }
 
 void Game::Render()
 {
     // Renderer
     SDL_FRect rectFondo{0, 0, 1920, 1080};
-    
     SDL_Surface* surfacefondo = IMG_Load("./assets/desktop-wallpaper-backgrounds-for-visual-novel-school-yard-anime.jpg");
     SDL_Texture* texturebackground = SDL_CreateTextureFromSurface(renderer, surfacefondo);
     SDL_DestroySurface(surfacefondo);
-
     SDL_RenderTexture(renderer, texturebackground, nullptr, &rectFondo);
+
+    int gridWidth = Width * Cellsize;
+    int gridHeight = Height * Cellsize;
+    int offsetX = (1920 - gridWidth) / 2;
+    int offsetY = (1080 - gridHeight) / 2;
+    
+    // Renderizar bordes de la grilla
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    for (int x = 0; x <= Width; x++) {
+        SDL_RenderLine(renderer, 
+            offsetX + x * Cellsize, offsetY, 
+            offsetX + x * Cellsize, offsetY + gridHeight);
+    }
+    for (int y = 0; y <= Height; y++) {
+        SDL_RenderLine(renderer,
+            offsetX, offsetY + y * Cellsize,
+            offsetX + gridWidth, offsetY + y * Cellsize);
+    }
     
     for (Person* person : world->GetPersons()){
-        // Obtener información de la persona
         std::string nombre = person->GetName();
         enum Sex sexo = person->GetSex();
         
-        // Elegir color según el sexo
         if (sexo == FEMALE) {
-            // Rosa para chicas
-            SDL_SetRenderDrawColor(renderer, 255, 182, 193, 255); // Color rosa
-        } 
-        else {
-            // Azul para chicos  
-            SDL_SetRenderDrawColor(renderer, 135, 206, 235, 255); // Color azul claro
+            SDL_SetRenderDrawColor(renderer, 255, 182, 193, 255);
+        } else {
+            SDL_SetRenderDrawColor(renderer, 135, 206, 235, 255);
         }
         
-        // Dibujar el cuadro de la persona
+        int personY = std::get<0>(person->GetPosition());
+        int personX = std::get<1>(person->GetPosition());
+        
         SDL_FRect rectPersona{
-            (float)std::get<1>(person->GetPosition()), 
-            (float)std::get<0>(person->GetPosition()), 
+            (float)offsetX + personX * Cellsize,
+            (float)offsetY + personY * Cellsize,
             Cellsize, 
             Cellsize
         };
         SDL_RenderFillRect(renderer, &rectPersona);
         
-        // Dibujar borde del cuadro
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // Borde negro
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderRect(renderer, &rectPersona);
         
-        // Renderizar la primera letra del nombre
         if (!nombre.empty()) {
             char primeraLetra = nombre[0];
             std::string letraStr(1, primeraLetra);
-            
-            // Crear superficie con la letra (necesitarás una fuente)
-            SDL_Color colorTexto = {0, 0, 0, 255}; // Texto negro
-            
-            // Si tienes TTF cargado:
-            // TTF_Font* font = TTF_OpenFont("assets/font.ttf", 24);
-            // SDL_Surface* textSurface = TTF_RenderText_Solid(font, letraStr.c_str(), colorTexto);
-            // SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
-            
-            // Posicionar la letra en el centro del cuadro
-            float textX = std::get<1>(person->GetPosition()) + Cellsize/2 - 5;
-            float textY = std::get<0>(person->GetPosition()) + Cellsize/2 - 5;
-            SDL_FRect textRect{textX, textY, 10, 10};
-            
-            // SDL_RenderTexture(renderer, textTexture, nullptr, &textRect);
-            // SDL_DestroyTexture(textTexture);
-            // SDL_DestroySurface(textSurface);
-            
-            // Versión temporal: dibujar un punto para representar la letra
+            float textX = offsetX + personX * Cellsize + Cellsize/2 - 8;
+            float textY = offsetY + personY * Cellsize + Cellsize/2 - 8;
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-            SDL_RenderPoint(renderer, textX + 5, textY + 5);
-        }
-        // Opcional: mostrar estado de disponibilidad con el borde
-        if (!person->IsAvailable()) {
-            // Corazón roto - borde rojo
-            SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-            SDL_RenderRect(renderer, &rectPersona);
+            SDL_RenderDebugText(renderer, textX, textY, letraStr.c_str());
         }
     }
     SDL_RenderPresent(renderer);

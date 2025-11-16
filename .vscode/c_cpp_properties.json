@@ -2,8 +2,13 @@
     "configurations": [
         {
             "name": "Win32",
-            "includePath": [
-                "${workspaceFolder}/**"
+             "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/external/SDL3_ttf/include",
+                "${workspaceFolder}/external/SDL3/include",
+                "${workspaceFolder}/external/SDL3_image/include",
+                "${workspaceFolder}/external/spdlog/include",
+                "${workspaceFolder}/external/nlohmann_json/include"
             ],
             "defines": [
                 "_DEBUG",

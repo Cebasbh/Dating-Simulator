@@ -3,7 +3,7 @@
 #include <spdlog/spdlog.h>
 
 int main() {
-    Game game(25, 25);
+    Game game(26, 26);
     game.Initialize();
     game.Run();
     return 0;

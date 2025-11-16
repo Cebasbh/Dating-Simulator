@@ -34,20 +34,20 @@ build_Person:
 	g++ -I./src -I./src/Person -c ./src/Person/Person.cpp -o ./bin/Person.o
 
 build_Game:
-	g++ -c ./src/Game.cpp -I./src -I./src/EntityManager -Iexternal/spdlog/include -Iexternal/SDL3/include -Iexternal/SDL3_image/include -Iexternal/nlohmann_json/include -o ./bin/Game.o
+	g++ -c ./src/Game.cpp -I./src -I./src/EntityManager -Iexternal/spdlog/include -Iexternal/SDL3/include -Iexternal/SDL3_image/include -Iexternal/nlohmann_json/include -Iexternal/SDL3_ttf/include -o ./bin/Game.o
 
 build_main:
-	g++ -I./src -c ./src/main.cpp -Iexternal/spdlog/include -Iexternal/SDL3/include -Iexternal/SDL3_image/include -Iexternal/nlohmann_json/include -o ./bin/main.o
+	g++ -I./src -c ./src/main.cpp -Iexternal/spdlog/include -Iexternal/SDL3/include -Iexternal/SDL3_image/include -Iexternal/nlohmann_json/include -Iexternal/SDL3_ttf/include -o ./bin/main.o
 
 link: ./bin/Game.o ./bin/World.o ./bin/Grid.o ./bin/WeightNode.o ./bin/WeightTree.o ./bin/HashEntry.o ./bin/HashTable.o ./bin/AVLNode.o ./bin/AVLTree.o ./bin/Person.o ./bin/main.o ./bin/Randomizers.o
 	g++ ./bin/Game.o ./bin/World.o ./bin/Grid.o ./bin/WeightNode.o ./bin/WeightTree.o ./bin/HashEntry.o ./bin/HashTable.o ./bin/AVLNode.o ./bin/AVLTree.o ./bin/Person.o ./bin/main.o ./bin/Randomizers.o \
 	-Lexternal/spdlog -lspdlog \
 	-Lexternal/SDL3/lib -lSDL3 \
 	-Lexternal/SDL3_image/lib -lSDL3_image \
+	-Lexternal/SDL3_ttf/lib -lSDL3_ttf \
 	-lwinmm -limm32 -lversion -lole32 -loleaut32 \
 	-lsetupapi -lshell32 -luser32 -lgdi32 -luuid \
 	-o ./bin/main.exe
-
 run:
 	./bin/main.exe
 
