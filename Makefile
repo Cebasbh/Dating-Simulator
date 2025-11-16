@@ -41,7 +41,7 @@ build_main:
 
 link: ./bin/Game.o ./bin/World.o ./bin/Grid.o ./bin/WeightNode.o ./bin/WeightTree.o ./bin/HashEntry.o ./bin/HashTable.o ./bin/AVLNode.o ./bin/AVLTree.o ./bin/Person.o ./bin/main.o ./bin/Randomizers.o
 	g++ ./bin/Game.o ./bin/World.o ./bin/Grid.o ./bin/WeightNode.o ./bin/WeightTree.o ./bin/HashEntry.o ./bin/HashTable.o ./bin/AVLNode.o ./bin/AVLTree.o ./bin/Person.o ./bin/main.o ./bin/Randomizers.o \
-	-Lexternal/spdlog -lspdlog \
+	-Iexternal/spdlog/include \
 	-Lexternal/SDL3/lib -lSDL3 \
 	-Lexternal/SDL3_image/lib -lSDL3_image \
 	-Lexternal/SDL3_ttf/lib -lSDL3_ttf \
@@ -52,5 +52,4 @@ run:
 	./bin/main.exe
 
 clean:
-	del /Q ./bin/*.o
-	del /Q ./bin/*.exe
+	rm -f ./bin/*.o ./bin/*.exe
