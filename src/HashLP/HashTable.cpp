@@ -19,7 +19,7 @@ int HashTable::HashFunction(std::string key){
     return hash;
 }
 
-/*Lo saqué de este link: https://www.geeksforgeeks.org/java/implementing-our-own-hash-table-with-separate-chaining-in-java/*/
+/*Rehash fue extraido de: https://www.geeksforgeeks.org/java/implementing-our-own-hash-table-with-separate-chaining-in-java/*/
 void HashTable::Rehash(){
     HashEntry** OldTable = Bins;
     int oldSize = Size;

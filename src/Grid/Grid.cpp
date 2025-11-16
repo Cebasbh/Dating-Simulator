@@ -32,6 +32,7 @@ void Grid::UpdatePersonPosition(Person* person) {
         GridPositions[y][x] = person;
     }
 }
+/*No código, pero se ideó en base a esta pregunta en stackoverflow: https://stackoverflow.com/questions/55497134/using-a-spatial-index-to-find-points-within-range-of-each-other?*/
 std::vector<Person*> Grid::GetNeighbors(Person* person) {
     std::vector<Person*> vecinos;
     int cy = std::get<0>(person->GetPosition());
