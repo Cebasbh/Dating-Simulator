@@ -110,6 +110,7 @@ void Game::ProcessInput()
                 if (!event.key.repeat && event.key.key == SDLK_1){
                     spdlog::info("Eres un monstruo");
                     world->Apocalypsis();
+                    isRunning = false;
                 }
                 break;
         }
@@ -117,13 +118,20 @@ void Game::ProcessInput()
 }
 
 void Game::Update(float deltaTime) {
-    static float simulationTimer = 0.0f;
-    simulationTimer += deltaTime;
+    static float simulationTimer1 = 0.0f;
+    static float simulationTimer2 = 0.0f;
+    simulationTimer1 += deltaTime;
+    simulationTimer2 += deltaTime;
     
     bool shouldMove = false;
-    if (simulationTimer >= 3.0f) {
+    bool shouldInteract = false;
+    if (simulationTimer1 >= 3.0f) {
         shouldMove = true;
-        simulationTimer = 0.0f;
+        simulationTimer1 = 0.0f;
+    }
+    if (simulationTimer2 >= 6.0f) {
+        shouldInteract = true;
+        simulationTimer2 = 0.0f;
     }
     
     for (Person* person : world->GetPersons()) {
@@ -132,30 +140,64 @@ void Game::Update(float deltaTime) {
         }
         if (shouldMove) {
             if (NumberRandomizer(false, 0, 1) == 0) {
-                int direction = NumberRandomizer(false, 0, 3);
+                int direction = NumberRandomizer(false, 0, 5);
                 int currentY = std::get<0>(person->GetPosition());
                 int currentX = std::get<1>(person->GetPosition());
-                
                 switch (direction) {
                     case 0:
+                        break;
+                    case 1:
+                        break;
+                    case 2:
                         if (currentY - 1 >= 0) {
                             person->SetPosition(std::make_tuple(currentY - 1, currentX));
                         }
                         break;
-                    case 1:
+                    case 3:
                         if (currentY + 1 < Height) {
                             person->SetPosition(std::make_tuple(currentY + 1, currentX));
                         }
                         break;
-                    case 2:
+                    case 4:
                         if (currentX + 1 < Width) {
                             person->SetPosition(std::make_tuple(currentY, currentX + 1));
                         }
                         break;
-                    case 3:
+                    case 5:
                         if (currentX - 1 >= 0) {
                             person->SetPosition(std::make_tuple(currentY, currentX - 1));
                         }
+                        break;
+                }
+            }
+        }
+        std::vector<std::tuple<Person*,float>> friendslist = person->GetFriendList();
+        int nfriends = friendslist.size();
+        if (shouldInteract && nfriends > 0) {
+            if (NumberRandomizer(false, 0, 1) == 0) {   
+                int type = NumberRandomizer(false, 0, 2);
+                int friendindex = NumberRandomizer(false, 0, nfriends - 1);
+                int quantity = NumberRandomizer(false, 0, 2);
+                enum Level magnitude;
+                switch (quantity){
+                    case 0:
+                        magnitude = HIGH;
+                        break;
+                    case 1:
+                        magnitude = LOW;
+                        break;
+                    case 2:
+                        magnitude = MEDIUM;
+                        break;
+                }
+                switch (type) {
+                    case 0:
+                        break;
+                    case 1:
+                        person->FightFriend(std::get<0>(friendslist[friendindex]),magnitude);
+                        break;
+                    case 2:
+                        person->BondFriend(std::get<0>(friendslist[friendindex]),magnitude);
                         break;
                 }
             }

@@ -132,6 +132,9 @@ void Person::FightFriend(Person* otherperson, enum Level quantity){
     else if (quantity == HIGH){
         std::cout <<  otherperson->GetName() << " ahora odia a " << Name << "\n";
     }
+    else if (quantity == MEDIUM){
+        std::cout <<  otherperson->GetName() << " discutió severamente con " << Name << "\n";
+    }
     else{
         std::cout << Name << " se peleó con " << otherperson->GetName() << "\n";
     }
@@ -168,8 +171,14 @@ void Person::BondFriend(Person* otherperson, enum Level quantity){
     if (quantity == COUPLE_EVENTS){
         std::cout << Name << " y " << otherperson->GetName() << " se aman más que nunca :') "<< "\n";
     }
+    else if (quantity == HIGH){
+        std::cout <<  otherperson->GetName() << " adora a " << Name << "\n";
+    }
+    else if (quantity == MEDIUM){
+        std::cout <<  otherperson->GetName() << " entablaron una conexión " << Name << "\n";
+    }
     else{
-        std::cout << Name << " se relacionó con " << otherperson->GetName() << "\n";
+        std::cout << Name << " charló amenamente con " << otherperson->GetName() << "\n";
     }
     std::cout <<"\n";
 }

@@ -61,7 +61,7 @@ class Person {
 
         float Compatibility(Person* potentialcouple);
         void Meet(Person* newfriend);
-        std::vector<std::tuple<Person*,float>>  GetFriendList();
+        std::vector<std::tuple<Person*,float>> GetFriendList();
         Person* FavoriteFriend(AVLNode* node = nullptr);
         void FightFriend(Person* otherperson, enum Level quantity);
         void BondFriend(Person* otherperson, enum Level quantity);
